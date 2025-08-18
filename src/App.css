@@ -1,0 +1,464 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
+
+* {
+  font-family: 'Inter', sans-serif;
+}
+
+:root {
+  --copperx-primary: #f2751a;
+  --copperx-secondary: #e35a0f;
+  --copperx-accent: #bc4310;
+  --copperx-light: #f59347;
+  --copperx-dark: #792e14;
+  --copperx-gradient: linear-gradient(135deg, #f2751a 0%, #e35a0f 50%, #bc4310 100%);
+  --copperx-radial: radial-gradient(ellipse at center, #f2751a 0%, #e35a0f 50%, #bc4310 100%);
+  --dark-gradient: linear-gradient(135deg, #0a0a0a 0%, #1a1a1a 25%, #2d2d2d 50%, #1a1a1a 75%, #0a0a0a 100%);
+}
+
+.glass-card {
+  background: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  border: 1px solid rgba(242, 117, 26, 0.15);
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.4), 
+              0 4px 16px rgba(0, 0, 0, 0.2),
+              inset 0 1px 0 rgba(242, 117, 26, 0.1);
+}
+
+.glass-card-hover {
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.glass-card-hover:hover {
+  background: rgba(242, 117, 26, 0.08);
+  border: 1px solid rgba(242, 117, 26, 0.25);
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5), 
+              0 8px 24px rgba(0, 0, 0, 0.3),
+              inset 0 1px 0 rgba(242, 117, 26, 0.2);
+  transform: translateY(-4px);
+}
+
+.copperx-gradient-text {
+  background: var(--copperx-gradient);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  background-size: 200% 200%;
+  animation: copperx-gradient-shift 3s ease infinite;
+}
+
+@keyframes copperx-gradient-shift {
+  0%, 100% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+}
+
+.copperx-button {
+  background: var(--copperx-gradient);
+  border: none;
+  color: white;
+  font-weight: 600;
+  padding: 12px 24px;
+  border-radius: 12px;
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.copperx-button::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+  transition: left 0.5s;
+}
+
+.copperx-button:hover::before {
+  left: 100%;
+}
+
+.copperx-button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 15px 40px rgba(242, 117, 26, 0.4);
+}
+
+.copperx-card {
+  background: rgba(242, 117, 26, 0.05);
+  border: 1px solid rgba(242, 117, 26, 0.1);
+  border-radius: 16px;
+  padding: 24px;
+  transition: all 0.3s ease;
+}
+
+.copperx-card:hover {
+  background: rgba(242, 117, 26, 0.08);
+  border-color: rgba(242, 117, 26, 0.2);
+  transform: translateY(-2px);
+}
+
+.copperx-status-completed {
+  background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+  color: white;
+}
+
+.copperx-status-processing {
+  background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);
+  color: white;
+}
+
+.copperx-status-pending {
+  background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+  color: white;
+}
+
+.copperx-status-failed {
+  background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+  color: white;
+}
+
+.floating-animation {
+  animation: float 8s ease-in-out infinite;
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0px) rotate(0deg); }
+  25% { transform: translateY(-15px) rotate(1deg); }
+  50% { transform: translateY(-25px) rotate(0deg); }
+  75% { transform: translateY(-10px) rotate(-1deg); }
+}
+
+.copperx-pulse-glow {
+  animation: copperx-pulse-glow 3s ease-in-out infinite alternate;
+}
+
+@keyframes copperx-pulse-glow {
+  from {
+    box-shadow: 0 0 30px rgba(242, 117, 26, 0.4),
+                0 0 60px rgba(227, 90, 15, 0.2);
+  }
+  to {
+    box-shadow: 0 0 50px rgba(242, 117, 26, 0.6),
+                0 0 100px rgba(227, 90, 15, 0.4);
+  }
+}
+
+.step-card {
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+  overflow: hidden;
+}
+
+.step-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(242, 117, 26, 0.1), transparent);
+  transition: left 0.6s;
+}
+
+.step-card:hover::before {
+  left: 100%;
+}
+
+.step-card:hover {
+  transform: translateY(-12px) scale(1.02);
+  box-shadow: 0 25px 80px rgba(0, 0, 0, 0.6);
+}
+
+.step-number {
+  background: var(--copperx-gradient);
+  position: relative;
+  overflow: hidden;
+}
+
+.step-number::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: linear-gradient(45deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+  transform: rotate(45deg);
+  animation: shimmer 2s infinite;
+}
+
+@keyframes shimmer {
+  0% { transform: translateX(-100%) translateY(-100%) rotate(45deg); }
+  100% { transform: translateX(100%) translateY(100%) rotate(45deg); }
+}
+
+.scroll-reveal {
+  opacity: 0;
+  transform: translateY(60px);
+  transition: all 1s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.scroll-reveal.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.hero-gradient {
+  background: var(--dark-gradient);
+}
+
+.copperx-hero-gradient {
+  background: linear-gradient(135deg, #0a0a0a 0%, #1a1a1a 25%, #2d2d2d 50%, #1a1a1a 75%, #0a0a0a 100%);
+}
+
+.card-gradient-1 {
+  background: linear-gradient(135deg, rgba(242, 117, 26, 0.1) 0%, rgba(227, 90, 15, 0.1) 100%);
+  border: 1px solid rgba(242, 117, 26, 0.2);
+}
+
+.card-gradient-2 {
+  background: linear-gradient(135deg, rgba(245, 147, 47, 0.1) 0%, rgba(242, 117, 26, 0.1) 100%);
+  border: 1px solid rgba(245, 147, 47, 0.2);
+}
+
+.card-gradient-3 {
+  background: linear-gradient(135deg, rgba(188, 67, 16, 0.1) 0%, rgba(121, 46, 20, 0.1) 100%);
+  border: 1px solid rgba(188, 67, 16, 0.2);
+}
+
+.card-gradient-4 {
+  background: linear-gradient(135deg, rgba(242, 117, 26, 0.1) 0%, rgba(188, 67, 16, 0.1) 100%);
+  border: 1px solid rgba(242, 117, 26, 0.2);
+}
+
+.interactive-button {
+  position: relative;
+  overflow: hidden;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.interactive-button::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+  transition: left 0.5s;
+}
+
+.interactive-button:hover::before {
+  left: 100%;
+}
+
+.interactive-button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.4);
+}
+
+.mobile-optimized {
+  @media (max-width: 768px) {
+    padding: 1rem;
+  }
+}
+
+.responsive-grid {
+  display: grid;
+  gap: 1.5rem;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+}
+
+/* CopperX specific styles */
+.copperx-navbar {
+  background: rgba(10, 10, 10, 0.95);
+  backdrop-filter: blur(20px);
+  border-bottom: 1px solid rgba(242, 117, 26, 0.1);
+}
+
+.copperx-logo {
+  background: var(--copperx-gradient);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  font-weight: 800;
+}
+
+.copperx-progress-bar {
+  background: linear-gradient(90deg, var(--copperx-primary) 0%, var(--copperx-secondary) 100%);
+  height: 4px;
+  border-radius: 2px;
+  transition: width 0.3s ease;
+}
+
+.copperx-input {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(242, 117, 26, 0.2);
+  border-radius: 12px;
+  padding: 12px 16px;
+  color: white;
+  transition: all 0.3s ease;
+}
+
+.copperx-input:focus {
+  outline: none;
+  border-color: var(--copperx-primary);
+  background: rgba(242, 117, 26, 0.05);
+  box-shadow: 0 0 0 3px rgba(242, 117, 26, 0.1);
+}
+
+.copperx-select {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(242, 117, 26, 0.2);
+  border-radius: 12px;
+  padding: 12px 16px;
+  color: white;
+  transition: all 0.3s ease;
+}
+
+.copperx-select:focus {
+  outline: none;
+  border-color: var(--copperx-primary);
+  background: rgba(242, 117, 26, 0.05);
+}
+
+.copperx-table {
+  background: rgba(255, 255, 255, 0.02);
+  border-radius: 16px;
+  overflow: hidden;
+}
+
+.copperx-table th {
+  background: rgba(242, 117, 26, 0.1);
+  color: var(--copperx-primary);
+  font-weight: 600;
+  padding: 16px;
+  text-align: left;
+}
+
+.copperx-table td {
+  padding: 16px;
+  border-bottom: 1px solid rgba(242, 117, 26, 0.1);
+}
+
+.copperx-table tr:hover {
+  background: rgba(242, 117, 26, 0.05);
+}
+
+.copperx-badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 4px 12px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.copperx-badge-success {
+  background: rgba(16, 185, 129, 0.1);
+  color: #10b981;
+  border: 1px solid rgba(16, 185, 129, 0.2);
+}
+
+.copperx-badge-warning {
+  background: rgba(245, 158, 11, 0.1);
+  color: #f59e0b;
+  border: 1px solid rgba(245, 158, 11, 0.2);
+}
+
+.copperx-badge-error {
+  background: rgba(239, 68, 68, 0.1);
+  color: #ef4444;
+  border: 1px solid rgba(239, 68, 68, 0.2);
+}
+
+.copperx-badge-info {
+  background: rgba(59, 130, 246, 0.1);
+  color: #3b82f6;
+  border: 1px solid rgba(59, 130, 246, 0.2);
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+  .copperx-card {
+    padding: 16px;
+  }
+  
+  .copperx-table {
+    font-size: 14px;
+  }
+  
+  .copperx-table th,
+  .copperx-table td {
+    padding: 12px 8px;
+  }
+}
+
+/* Loading animations */
+.copperx-loading {
+  display: inline-block;
+  width: 20px;
+  height: 20px;
+  border: 3px solid rgba(242, 117, 26, 0.3);
+  border-radius: 50%;
+  border-top-color: var(--copperx-primary);
+  animation: spin 1s ease-in-out infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+.copperx-skeleton {
+  background: linear-gradient(90deg, rgba(242, 117, 26, 0.1) 25%, rgba(242, 117, 26, 0.2) 50%, rgba(242, 117, 26, 0.1) 75%);
+  background-size: 200% 100%;
+  animation: copperx-shimmer 1.5s infinite;
+}
+
+/* Tooltip styles */
+.copperx-tooltip {
+  position: relative;
+  display: inline-block;
+}
+
+.copperx-tooltip .copperx-tooltiptext {
+  visibility: hidden;
+  width: 200px;
+  background-color: rgba(10, 10, 10, 0.95);
+  color: white;
+  text-align: center;
+  border-radius: 8px;
+  padding: 8px 12px;
+  position: absolute;
+  z-index: 1;
+  bottom: 125%;
+  left: 50%;
+  margin-left: -100px;
+  opacity: 0;
+  transition: opacity 0.3s;
+  border: 1px solid rgba(242, 117, 26, 0.2);
+}
+
+.copperx-tooltip:hover .copperx-tooltiptext {
+  visibility: visible;
+  opacity: 1;
+}
+
+/* Notification Animation */
+@keyframes slideIn {
+  from {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+.animate-slide-in {
+  animation: slideIn 0.3s ease-out;
+}
