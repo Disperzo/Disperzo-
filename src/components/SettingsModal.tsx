@@ -181,6 +181,7 @@ const SettingsModal = ({ isOpen, onClose }: SettingsModalProps) => {
                       <option value="Polygon">Polygon</option>
                       <option value="Arbitrum">Arbitrum</option>
                       <option value="Base">Base</option>
+                      <option value="Somnia">Somnia</option>
                     </select>
                   </div>
                 </div>
