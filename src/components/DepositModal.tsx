@@ -16,7 +16,9 @@ const DepositModal: React.FC<DepositModalProps> = ({ onClose }) => {
     { name: 'Base', logo: '🔷', color: 'blue' },
     { name: 'Optimism', logo: '🔴', color: 'red' },
     { name: 'BSC', logo: '🟡', color: 'yellow' },
-    { name: 'Somnia', logo: '🌙', color: 'indigo' }
+    { name: 'Somnia', logo: '🌙', color: 'indigo' },
+    { name: 'U2U Solar', logo: '🦄', color: 'purple' },
+    { name: 'U2U Nebulas', logo: '🦄', color: 'purple' }
   ];
 
   // Non-EVM Networks (Coming Soon)

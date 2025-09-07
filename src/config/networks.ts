@@ -137,6 +137,37 @@ export const networks: Network[] = [
     },
     isTestnet: true,
   },
+  // U2U Networks
+  {
+    id: 'u2u-solar',
+    name: 'U2U Solar',
+    chainId: 251,
+    rpcUrl: 'https://rpc-solar-mainnet.uniultra.xyz',
+    explorerUrl: 'https://u2uscan.xyz',
+    icon: '🦄',
+    color: 'purple',
+    nativeCurrency: {
+      name: 'U2U',
+      symbol: 'U2U',
+      decimals: 18,
+    },
+    isTestnet: false,
+  },
+  {
+    id: 'u2u-nebulas',
+    name: 'U2U Nebulas',
+    chainId: 2484,
+    rpcUrl: 'https://rpc-nebulas-testnet.uniultra.xyz',
+    explorerUrl: 'https://testnet.u2uscan.xyz',
+    icon: '🦄',
+    color: 'purple',
+    nativeCurrency: {
+      name: 'U2U',
+      symbol: 'U2U',
+      decimals: 18,
+    },
+    isTestnet: true,
+  },
   // Testnet Networks
   {
     id: 'sepolia',

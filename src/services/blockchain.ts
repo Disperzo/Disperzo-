@@ -117,6 +117,25 @@ export class BlockchainService {
   public getSomniaTestnet(): Network | undefined {
     return networks.find(network => network.id === 'somnia-testnet');
   }
+
+  // U2U-specific methods
+  public isU2UNetwork(networkId: string): boolean {
+    return networkId === 'u2u-solar' || networkId === 'u2u-nebulas';
+  }
+
+  public getU2UNetworks(): Network[] {
+    return networks.filter(network => 
+      network.id === 'u2u-solar' || network.id === 'u2u-nebulas'
+    );
+  }
+
+  public getU2USolar(): Network | undefined {
+    return networks.find(network => network.id === 'u2u-solar');
+  }
+
+  public getU2UNebulas(): Network | undefined {
+    return networks.find(network => network.id === 'u2u-nebulas');
+  }
 }
 
 export const blockchainService = BlockchainService.getInstance();

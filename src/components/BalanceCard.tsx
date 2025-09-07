@@ -207,6 +207,56 @@ const BalanceCard: React.FC = () => {
           icon: '🌙'
         }
       ]
+    },
+    {
+      id: 'u2u-solar',
+      name: 'U2U Solar',
+      icon: '🦄',
+      assets: [
+        {
+          symbol: 'U2U',
+          name: 'U2U',
+          balance: '2,500.00',
+          value: '$1,250.00',
+          change24h: '+$75.00',
+          change24hPercent: 6.4,
+          icon: '🦄'
+        },
+        {
+          symbol: 'USDC',
+          name: 'USD Coin',
+          balance: '1,500.00',
+          value: '$1,500.00',
+          change24h: '+$0.00',
+          change24hPercent: 0.0,
+          icon: '🦄'
+        }
+      ]
+    },
+    {
+      id: 'u2u-nebulas',
+      name: 'U2U Nebulas',
+      icon: '🦄',
+      assets: [
+        {
+          symbol: 'U2U',
+          name: 'U2U',
+          balance: '139.99',
+          value: '$69.99',
+          change24h: '+$5.00',
+          change24hPercent: 7.7,
+          icon: '🦄'
+        },
+        {
+          symbol: 'USDC',
+          name: 'USD Coin',
+          balance: '500.00',
+          value: '$500.00',
+          change24h: '+$0.00',
+          change24hPercent: 0.0,
+          icon: '🦄'
+        }
+      ]
     }
   ];
 

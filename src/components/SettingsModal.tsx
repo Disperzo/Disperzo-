@@ -182,6 +182,8 @@ const SettingsModal = ({ isOpen, onClose }: SettingsModalProps) => {
                       <option value="Arbitrum">Arbitrum</option>
                       <option value="Base">Base</option>
                       <option value="Somnia">Somnia</option>
+                      <option value="U2U Solar">U2U Solar</option>
+                      <option value="U2U Nebulas">U2U Nebulas</option>
                     </select>
                   </div>
                 </div>

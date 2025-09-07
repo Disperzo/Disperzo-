@@ -131,6 +131,8 @@ const DistributionWizard = () => {
                   <option>Optimism</option>
                   <option>BSC</option>
                   <option>Somnia</option>
+                  <option>U2U Solar</option>
+                  <option>U2U Nebulas</option>
                 </select>
               </div>
             </div>
