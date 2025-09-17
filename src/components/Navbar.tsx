@@ -1,7 +1,10 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { Menu, X, Wallet, BarChart3, Settings, User, LogOut } from 'lucide-react';
+import { usePrivy } from '@privy-io/react-auth';
+import { useAuth } from '../contexts/AuthContext';
 import SettingsModal from './SettingsModal';
+import CopyableAddress from './CopyableAddress';
 
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -10,6 +13,8 @@ const Navbar = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const profileDropdownRef = useRef<HTMLDivElement>(null);
+  const { logout } = usePrivy();
+  const { user } = useAuth();
 
   const navigation = [
     { name: 'Dashboard', href: '/dashboard', icon: BarChart3 },
@@ -19,9 +24,11 @@ const Navbar = () => {
 
   const isActive = (path: string) => location.pathname === path;
 
-  const handleLogout = () => {
+  const handleLogout = async () => {
     // Close dropdown
     setIsProfileDropdownOpen(false);
+    // Logout using Privy
+    await logout();
     // Navigate to login page
     navigate('/');
   };
@@ -91,7 +98,26 @@ const Navbar = () => {
               
               {/* Profile Dropdown */}
               {isProfileDropdownOpen && (
-                <div className="absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg border border-gray-200 py-2 z-50" ref={profileDropdownRef}>
+                <div className="absolute right-0 mt-2 w-64 bg-white rounded-lg shadow-lg border border-gray-200 py-2 z-50" ref={profileDropdownRef}>
+                  {/* User Info */}
+                  <div className="px-4 py-3 border-b border-gray-100">
+                    <p className="text-sm font-medium text-gray-900">
+                      {user?.email?.address || 'User'}
+                    </p>
+                    <p className="text-xs text-gray-500 mt-1">
+                      {user?.email?.address ? 'Email Account' : 'Wallet Connected'}
+                    </p>
+                    {user?.wallet?.address && (
+                      <div className="mt-2">
+                        <CopyableAddress 
+                          address={user.wallet.address} 
+                          className="text-xs"
+                        />
+                      </div>
+                    )}
+                  </div>
+                  
+                  {/* Logout Button */}
                   <button
                     onClick={handleLogout}
                     className="w-full flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 transition-colors"
