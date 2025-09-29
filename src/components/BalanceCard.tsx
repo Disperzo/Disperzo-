@@ -161,16 +161,16 @@ const BalanceCard: React.FC = () => {
     {
       id: 'base',
       name: 'Base',
-      icon: '🔵',
+      icon: '🔷',
       assets: [
         {
           symbol: 'ETH',
           name: 'Ethereum',
           balance: '0.1234',
           value: '$213.45',
-          change24h: '+$8.90',
-          change24hPercent: 4.3,
-          icon: '🔵'
+          change24h: '+$12.34',
+          change24hPercent: 6.1,
+          icon: '🔷'
         },
         {
           symbol: 'USDC',
@@ -179,7 +179,82 @@ const BalanceCard: React.FC = () => {
           value: '$500.00',
           change24h: '+$0.00',
           change24hPercent: 0.0,
-          icon: '🔵'
+          icon: '🔷'
+        }
+      ]
+    },
+    {
+      id: 'somnia',
+      name: 'Somnia',
+      icon: '🌙',
+      assets: [
+        {
+          symbol: 'SOMI',
+          name: 'Somnia',
+          balance: '1,234.56',
+          value: '$987.65',
+          change24h: '+$45.67',
+          change24hPercent: 4.8,
+          icon: '🌙'
+        },
+        {
+          symbol: 'USDC',
+          name: 'USD Coin',
+          balance: '2,000.00',
+          value: '$2,000.00',
+          change24h: '+$0.00',
+          change24hPercent: 0.0,
+          icon: '🌙'
+        }
+      ]
+    },
+    {
+      id: 'u2u-solar',
+      name: 'U2U Solar',
+      icon: '🦄',
+      assets: [
+        {
+          symbol: 'U2U',
+          name: 'U2U',
+          balance: '2,500.00',
+          value: '$1,250.00',
+          change24h: '+$75.00',
+          change24hPercent: 6.4,
+          icon: '🦄'
+        },
+        {
+          symbol: 'USDC',
+          name: 'USD Coin',
+          balance: '1,500.00',
+          value: '$1,500.00',
+          change24h: '+$0.00',
+          change24hPercent: 0.0,
+          icon: '🦄'
+        }
+      ]
+    },
+    {
+      id: 'u2u-nebulas',
+      name: 'U2U Nebulas',
+      icon: '🦄',
+      assets: [
+        {
+          symbol: 'U2U',
+          name: 'U2U',
+          balance: '139.99',
+          value: '$69.99',
+          change24h: '+$5.00',
+          change24hPercent: 7.7,
+          icon: '🦄'
+        },
+        {
+          symbol: 'USDC',
+          name: 'USD Coin',
+          balance: '500.00',
+          value: '$500.00',
+          change24h: '+$0.00',
+          change24hPercent: 0.0,
+          icon: '🦄'
         }
       ]
     }
