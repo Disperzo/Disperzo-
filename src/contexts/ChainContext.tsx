@@ -20,7 +20,7 @@ interface ChainProviderProps {
 }
 
 export const ChainProvider: React.FC<ChainProviderProps> = ({ children }) => {
-  const [selectedChain, setSelectedChain] = useState('ethereum');
+  const [selectedChain, setSelectedChain] = useState('u2u-nebulas');
 
   return (
     <ChainContext.Provider value={{ selectedChain, setSelectedChain }}>

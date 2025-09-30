@@ -49,11 +49,8 @@ interface ContractContextType {
   getExplorerUrl: (txHash: string) => string;
   refreshBalance: () => Promise<void>;
   mintTestUSDC: (amount: string) => Promise<string>;
-  checkTokenApproval: (tokenAddress: string, amount: string) => Promise<boolean>;
-  approveToken: (tokenAddress: string, amount: string) => Promise<string>;
   isLoading: boolean;
   error: string | null;
-  currentTxHash: string | undefined;
 }
 
 const ContractContext = createContext<ContractContextType | undefined>(undefined);
@@ -62,7 +59,7 @@ interface ContractProviderProps {
   children: ReactNode;
 }
 
-export const ContractProvider: React.FC<ContractProviderProps> = ({ children }) => {
+export const WagmiContractProvider: React.FC<ContractProviderProps> = ({ children }) => {
   const { user, authenticated, ready } = usePrivy();
   const { address, isConnected: wagmiConnected } = useAccount();
   const chainId = useChainId();
@@ -81,18 +78,30 @@ export const ContractProvider: React.FC<ContractProviderProps> = ({ children }) 
     chainId: 2484, // U2U Nebulas
   });
 
-  // Write contract hook for all operations
+  // Write contract hook for distributions
   const { 
-    writeContract, 
-    data: txHash, 
-    isPending: isWritePending,
-    error: writeError 
+    writeContract: writeDistribution, 
+    data: distributionTxHash, 
+    isPending: isDistributionPending,
+    error: distributionError 
   } = useWriteContract();
 
-  // Wait for transaction receipt - explicitly use U2U chain
-  const { isLoading: isTransactionConfirming } = useWaitForTransactionReceipt({
-    hash: txHash,
-    chainId: 2484, // Force U2U Nebulas chain
+  // Write contract hook for USDC minting
+  const { 
+    writeContract: writeUSDC, 
+    data: usdcTxHash, 
+    isPending: isUSDCPending,
+    error: usdcError 
+  } = useWriteContract();
+
+  // Wait for distribution transaction
+  const { isLoading: isDistributionConfirming } = useWaitForTransactionReceipt({
+    hash: distributionTxHash,
+  });
+
+  // Wait for USDC transaction
+  const { isLoading: isUSDCConfirming } = useWaitForTransactionReceipt({
+    hash: usdcTxHash,
   });
 
   // Initialize contract when user is authenticated
@@ -108,31 +117,21 @@ export const ContractProvider: React.FC<ContractProviderProps> = ({ children }) 
         setIsLoading(true);
         setError(null);
 
-        // Ensure we're on U2U Nebulas chain (2484)
-        if (chainId !== 2484 && switchChain) {
-          console.log('Switching to U2U Nebulas chain (2484)...');
-          await switchChain({ chainId: 2484 });
-          // Wait a moment for chain switch to complete
-          await new Promise(resolve => setTimeout(resolve, 1000));
-        }
-
-        // Always use U2U Nebulas network
-        setCurrentNetwork('u2u-nebulas');
-        const contractAddr = CONTRACT_ADDRESSES['u2u-nebulas'];
+        const contractAddr = CONTRACT_ADDRESSES[currentNetwork as keyof typeof CONTRACT_ADDRESSES];
 
         if (!contractAddr) {
-          throw new Error(`Contract not deployed on U2U Nebulas network`);
+          throw new Error(`Contract not deployed on network: ${currentNetwork}`);
         }
 
         setContractAddress(contractAddr);
         setIsConnected(true);
         setIsInitialized(true);
 
-        console.log('Wagmi Contract initialized successfully on U2U Nebulas:', {
+        console.log('Wagmi Contract initialized successfully:', {
           address: address,
-          network: 'u2u-nebulas',
+          network: currentNetwork,
           contractAddress: contractAddr,
-          chainId: 2484
+          chainId: chainId
         });
 
       } catch (err) {
@@ -149,17 +148,7 @@ export const ContractProvider: React.FC<ContractProviderProps> = ({ children }) 
     // Add a small delay to ensure wallet is fully loaded
     const timer = setTimeout(initializeContract, 1000);
     return () => clearTimeout(timer);
-  }, [ready, authenticated, user, address, chainId, switchChain]);
-
-  // Helper function to ensure we're on U2U Nebulas chain
-  const ensureU2UChain = async () => {
-    if (chainId !== 2484 && switchChain) {
-      console.log('Switching to U2U Nebulas chain (2484) for transaction...');
-      await switchChain({ chainId: 2484 });
-      // Wait a moment for chain switch to complete
-      await new Promise(resolve => setTimeout(resolve, 1000));
-    }
-  };
+  }, [ready, authenticated, user, address, currentNetwork, chainId]);
 
   // Contract methods using wagmi hooks
   const createDistribution = async (params: {
@@ -191,13 +180,9 @@ export const ContractProvider: React.FC<ContractProviderProps> = ({ children }) 
       setIsLoading(true);
       setError(null);
 
-      // Ensure we're on U2U Nebulas chain before making the transaction
-      await ensureU2UChain();
-
-      // Ensure we're using U2U Nebulas contract
-      const contractAddr = CONTRACT_ADDRESSES['u2u-nebulas'];
+      const contractAddr = CONTRACT_ADDRESSES[currentNetwork as keyof typeof CONTRACT_ADDRESSES];
       if (!contractAddr) {
-        throw new Error(`Contract not deployed on U2U Nebulas network`);
+        throw new Error(`Contract not deployed on network: ${currentNetwork}`);
       }
 
       const erc20Transfers = params.erc20Transfers || [];
@@ -214,7 +199,7 @@ export const ContractProvider: React.FC<ContractProviderProps> = ({ children }) 
         walletAddress: address
       });
       
-      // Clean erc20Transfers to ensure no empty values and convert types for wagmi
+      // Clean erc20Transfers to ensure no empty values and proper types
       const cleanErc20Transfers = erc20Transfers.map((transfer, index) => {
         console.log(`🔍 Transfer ${index}:`, transfer);
         
@@ -223,13 +208,13 @@ export const ContractProvider: React.FC<ContractProviderProps> = ({ children }) 
         }
         
         const cleanTransfer = {
-          token: transfer.token || '',
-          recipients: transfer.recipients || [],
-          amounts: transfer.amounts || []
+          token: transfer.token as `0x${string}`,
+          recipients: transfer.recipients.map(addr => addr as `0x${string}`),
+          amounts: transfer.amounts.map(amount => parseEther(amount))
         };
         
         // Validate token address
-        if (!cleanTransfer.token || cleanTransfer.token === '') {
+        if (!cleanTransfer.token) {
           throw new Error(`Empty token address at index ${index}`);
         }
         
@@ -243,44 +228,22 @@ export const ContractProvider: React.FC<ContractProviderProps> = ({ children }) 
         }
         
         // Check for empty strings in amounts
-        const hasEmptyAmounts = cleanTransfer.amounts.some(amount => amount === '' || amount === null || amount === undefined);
+        const hasEmptyAmounts = transfer.amounts.some(amount => amount === '' || amount === null || amount === undefined);
         if (hasEmptyAmounts) {
-          throw new Error(`Empty amount found in transfer ${index}. Amounts: ${JSON.stringify(cleanTransfer.amounts)}`);
+          throw new Error(`Empty amount found in transfer ${index}. Amounts: ${JSON.stringify(transfer.amounts)}`);
         }
         
-        // Convert to wagmi-compatible types
-        const wagmiTransfer = {
-          token: cleanTransfer.token as `0x${string}`,
-          recipients: cleanTransfer.recipients as readonly `0x${string}`[],
-          amounts: cleanTransfer.amounts.map(amount => BigInt(amount)) as readonly bigint[]
-        };
-        
-        console.log(`✅ Clean transfer ${index}:`, wagmiTransfer);
-        return wagmiTransfer;
+        console.log(`✅ Clean transfer ${index}:`, cleanTransfer);
+        return cleanTransfer;
       });
       
       console.log('✅ All transfers cleaned:', cleanErc20Transfers);
-
-      // Check token approvals for ERC20 transfers
-      if (cleanErc20Transfers.length > 0) {
-        for (const transfer of cleanErc20Transfers) {
-          const totalAmount = transfer.amounts.reduce((sum, amount) => sum + amount, 0n);
-          const totalAmountInEther = formatEther(totalAmount);
-          
-          console.log(`Checking approval for token ${transfer.token}, amount: ${totalAmountInEther}`);
-          
-          const isApproved = await checkTokenApproval(transfer.token, totalAmountInEther);
-          if (!isApproved) {
-            throw new Error(`Token ${transfer.token} needs approval. Please approve the token first.`);
-          }
-        }
-      }
 
       // Prepare transaction parameters
       const cleanValue = value === '' || value === '0' ? '0' : value;
       const testValue = cleanValue === '0' ? '0' : '0.001'; // Use 0.001 U2U for testing
       const valueInWei = parseEther(testValue);
-      
+
       console.log('Value processing:', {
         originalValue: value,
         cleanValue: cleanValue,
@@ -288,23 +251,9 @@ export const ContractProvider: React.FC<ContractProviderProps> = ({ children }) 
         valueInWei: valueInWei.toString()
       });
 
-      // Convert ERC721 and ERC1155 transfers to wagmi-compatible types
-      const cleanErc721Transfers = (params.erc721Transfers || []).map(transfer => ({
-        token: transfer.token as `0x${string}`,
-        recipients: transfer.recipients as readonly `0x${string}`[],
-        tokenIds: transfer.tokenIds.map(id => BigInt(id)) as readonly bigint[]
-      }));
-
-      const cleanErc1155Transfers = (params.erc1155Transfers || []).map(transfer => ({
-        token: transfer.token as `0x${string}`,
-        recipients: transfer.recipients as readonly `0x${string}`[],
-        tokenIds: transfer.tokenIds.map(id => BigInt(id)) as readonly bigint[],
-        amounts: transfer.amounts.map(amount => BigInt(amount)) as readonly bigint[]
-      }));
-
-      // Use wagmi writeContract for the transaction on U2U Nebulas
+      // Use wagmi writeContract for the transaction
       if (cleanErc20Transfers.length > 0) {
-        await writeContract({
+        await writeDistribution({
           address: contractAddr as `0x${string}`,
           abi: DISPERZO_CORE_ABI,
           functionName: 'bulkTransferERC20',
@@ -315,7 +264,22 @@ export const ContractProvider: React.FC<ContractProviderProps> = ({ children }) 
           maxPriorityFeePerGas: parseEther('0.000000001'), // 1 gwei
         });
       } else {
-        await writeContract({
+        // Clean ERC721 transfers
+        const cleanErc721Transfers = (params.erc721Transfers || []).map(transfer => ({
+          token: transfer.token as `0x${string}`,
+          recipients: transfer.recipients.map(addr => addr as `0x${string}`),
+          tokenIds: transfer.tokenIds.map(id => BigInt(id))
+        }));
+
+        // Clean ERC1155 transfers
+        const cleanErc1155Transfers = (params.erc1155Transfers || []).map(transfer => ({
+          token: transfer.token as `0x${string}`,
+          recipients: transfer.recipients.map(addr => addr as `0x${string}`),
+          tokenIds: transfer.tokenIds.map(id => BigInt(id)),
+          amounts: transfer.amounts.map(amount => BigInt(amount))
+        }));
+
+        await writeDistribution({
           address: contractAddr as `0x${string}`,
           abi: DISPERZO_CORE_ABI,
           functionName: 'mixedBulkTransfer',
@@ -327,28 +291,19 @@ export const ContractProvider: React.FC<ContractProviderProps> = ({ children }) 
             description
           ],
           value: valueInWei,
-          gas: 500000n, // Increased gas limit for bulk transfers
+          gas: 300000n, // Increased gas limit for mixed transfers
           maxFeePerGas: parseEther('0.000000002'), // 2 gwei
           maxPriorityFeePerGas: parseEther('0.000000001'), // 1 gwei
         });
       }
 
-      // Wait for the transaction hash to be available
-      // This ensures the user has actually signed the transaction
-      let attempts = 0;
-      const maxAttempts = 100; // Increased to wait longer for user to sign
-      
-      while (attempts < maxAttempts && !txHash) {
-        await new Promise(resolve => setTimeout(resolve, 200));
-        attempts++;
+      // Wait for the transaction to be submitted
+      if (!distributionTxHash) {
+        throw new Error('Transaction submission failed');
       }
 
-      if (txHash) {
-        console.log('✅ Distribution transaction submitted:', txHash);
-        return txHash;
-      } else {
-        throw new Error('Transaction was not signed or failed to submit');
-      }
+      console.log('✅ Distribution transaction submitted:', distributionTxHash);
+      return distributionTxHash;
 
     } catch (err) {
       console.error('Error creating distribution:', err);
@@ -444,11 +399,8 @@ export const ContractProvider: React.FC<ContractProviderProps> = ({ children }) 
       setIsLoading(true);
       setError(null);
 
-      // Ensure we're on U2U Nebulas chain before making the transaction
-      await ensureU2UChain();
-
       const testUSDCAddress = '0x6011DB9397163d1782B57fEcB77C52EDBf1Dfe27';
-      
+
       console.log('Minting test USDC with wagmi:', {
         tokenAddress: testUSDCAddress,
         to: address,
@@ -456,33 +408,24 @@ export const ContractProvider: React.FC<ContractProviderProps> = ({ children }) 
         amountWei: parseEther(amount).toString()
       });
 
-      // Use wagmi writeContract for USDC minting on U2U Nebulas
-      await writeContract({
+      // Use wagmi writeContract for USDC minting with proper gas settings
+      await writeUSDC({
         address: testUSDCAddress as `0x${string}`,
         abi: ERC20_ABI,
         functionName: 'mint',
         args: [address as `0x${string}`, parseEther(amount)],
-        gas: 300000n, // Increased gas limit for minting operations
+        gas: 300000n, // Reasonable gas limit for minting operations
         maxFeePerGas: parseEther('0.000000002'), // 2 gwei (higher than minimum)
         maxPriorityFeePerGas: parseEther('0.000000001'), // 1 gwei
       });
 
-      // Wait for the transaction hash to be available
-      // This ensures the user has actually signed the transaction
-      let attempts = 0;
-      const maxAttempts = 100; // Increased to wait longer for user to sign
-      
-      while (attempts < maxAttempts && !txHash) {
-        await new Promise(resolve => setTimeout(resolve, 200));
-        attempts++;
+      // Wait for the transaction to be submitted
+      if (!usdcTxHash) {
+        throw new Error('USDC minting transaction submission failed');
       }
 
-      if (txHash) {
-        console.log('✅ Test USDC mint transaction submitted:', txHash);
-        return txHash;
-      } else {
-        throw new Error('Transaction was not signed or failed to submit');
-      }
+      console.log('✅ Test USDC mint transaction submitted:', usdcTxHash);
+      return usdcTxHash;
 
     } catch (err) {
       console.error('Error minting test USDC:', err);
@@ -493,102 +436,11 @@ export const ContractProvider: React.FC<ContractProviderProps> = ({ children }) 
     }
   };
 
-  const checkTokenApproval = async (tokenAddress: string, amount: string): Promise<boolean> => {
-    if (!isInitialized || !address) {
-      throw new Error('Contract not initialized');
-    }
-
-    try {
-      // Ensure we're on U2U Nebulas chain
-      await ensureU2UChain();
-
-      const contractAddr = CONTRACT_ADDRESSES['u2u-nebulas'];
-      if (!contractAddr) {
-        throw new Error('Contract not deployed on U2U Nebulas network');
-      }
-
-      // For now, we'll use a simple approach - if the user has approved before,
-      // we'll assume they have enough allowance. In production, you'd want to 
-      // actually read the allowance from the blockchain.
-      console.log('Checking token approval for:', { tokenAddress, amount, contractAddr });
-      
-      // Since we're on a testnet and the approval process is working,
-      // we'll return true to indicate the token is approved
-      return true;
-    } catch (err) {
-      console.error('Error checking token approval:', err);
-      return false;
-    }
-  };
-
-  const approveToken = async (tokenAddress: string, amount: string): Promise<string> => {
-    if (!isInitialized || !address) {
-      throw new Error('Contract not initialized');
-    }
-
-    try {
-      setIsLoading(true);
-      setError(null);
-
-      // Ensure we're on U2U Nebulas chain
-      await ensureU2UChain();
-
-      const contractAddr = CONTRACT_ADDRESSES['u2u-nebulas'];
-      if (!contractAddr) {
-        throw new Error('Contract not deployed on U2U Nebulas network');
-      }
-
-      const amountInWei = parseEther(amount);
-
-      console.log('Approving token for DisperzoCore:', {
-        tokenAddress,
-        spender: contractAddr,
-        amount: amount,
-        amountWei: amountInWei.toString()
-      });
-
-      // Use the writeContract hook for approval
-      await writeContract({
-        address: tokenAddress as `0x${string}`,
-        abi: ERC20_ABI,
-        functionName: 'approve',
-        args: [contractAddr as `0x${string}`, amountInWei],
-        gas: 100000n, // Standard gas limit for approvals
-        maxFeePerGas: parseEther('0.000000002'), // 2 gwei
-        maxPriorityFeePerGas: parseEther('0.000000001'), // 1 gwei
-      });
-
-      // Wait for the transaction hash to be available
-      // This ensures the user has actually signed the transaction
-      let attempts = 0;
-      const maxAttempts = 100; // Increased to wait longer for user to sign
-      
-      while (attempts < maxAttempts && !txHash) {
-        await new Promise(resolve => setTimeout(resolve, 200));
-        attempts++;
-      }
-
-      if (txHash) {
-        console.log('✅ Token approval transaction submitted:', txHash);
-        return txHash;
-      } else {
-        throw new Error('Transaction was not signed or failed to submit');
-      }
-
-    } catch (err) {
-      console.error('Error approving token:', err);
-      setError(err instanceof Error ? err.message : 'Failed to approve token');
-      throw err;
-    } finally {
-      setIsLoading(false);
-    }
-  };
-
   // Combine loading states
-  const combinedIsLoading = isLoading || isWritePending || isTransactionConfirming;
+  const combinedIsLoading = isLoading || isDistributionPending || isUSDCPending || isDistributionConfirming || isUSDCConfirming;
 
   // Combine error states
-  const combinedError = error || writeError?.message || null;
+  const combinedError: string | null = error || distributionError?.message || usdcError?.message || null;
 
   const value: ContractContextType = {
     isConnected: isConnected && wagmiConnected,
@@ -608,12 +460,8 @@ export const ContractProvider: React.FC<ContractProviderProps> = ({ children }) 
     getExplorerUrl,
     refreshBalance,
     mintTestUSDC,
-    checkTokenApproval,
-    approveToken,
     isLoading: combinedIsLoading,
     error: combinedError,
-    // Expose current transaction hash for components to use
-    currentTxHash: txHash,
   };
 
   return (

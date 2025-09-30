@@ -34,27 +34,27 @@ const StatsSection = () => {
   ];
 
   return (
-    <div className="py-16 bg-white">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="text-center mb-12">
-          <h2 className="text-3xl font-bold text-gray-900 mb-4">
+    <div className="py-10 bg-white">
+      <div className="max-w-4xl mx-auto px-2 sm:px-3 lg:px-4">
+        <div className="text-center mb-8">
+          <h2 className="text-lg font-bold text-gray-900 mb-2">
             Trusted by Leading Projects
           </h2>
-          <p className="text-lg text-gray-600 max-w-2xl mx-auto">
+          <p className="text-sm text-gray-600 max-w-xl mx-auto">
             Join thousands of projects that rely on Disperzo for their token distribution needs
           </p>
         </div>
         
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
           {stats.map((stat, index) => {
             const Icon = stat.icon;
             return (
               <div key={index} className="text-center">
-                <div className={`w-16 h-16 ${stat.bgColor} rounded-2xl flex items-center justify-center mx-auto mb-4`}>
-                    <Icon className={`w-8 h-8 ${stat.color}`} />
+                <div className={`w-10 h-10 ${stat.bgColor} rounded-lg flex items-center justify-center mx-auto mb-2`}>
+                    <Icon className={`w-5 h-5 ${stat.color}`} />
                 </div>
-                <div className="text-3xl font-bold text-gray-900 mb-2">{stat.value}</div>
-                <div className="text-gray-600">{stat.label}</div>
+                <div className="text-lg font-bold text-gray-900 mb-1">{stat.value}</div>
+                <div className="text-gray-600 text-xs">{stat.label}</div>
               </div>
             );
           })}

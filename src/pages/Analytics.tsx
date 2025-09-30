@@ -69,18 +69,18 @@ const Analytics = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 pt-24 pb-12">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div className="min-h-screen bg-gray-50 pt-16 pb-8">
+      <div className="max-w-4xl mx-auto px-2 sm:px-3 lg:px-4">
         {/* Header */}
-        <div className="mb-8">
-          <h1 className="text-3xl font-bold text-gray-900 mb-2">Analytics Dashboard</h1>
-          <p className="text-gray-600">Comprehensive insights into your distribution performance</p>
+        <div className="mb-5">
+          <h1 className="text-lg font-bold text-gray-900 mb-1">Analytics Dashboard</h1>
+          <p className="text-sm text-gray-600">Comprehensive insights into your distribution performance</p>
         </div>
 
         {/* Overview Stats */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-          <div className="bg-white rounded-2xl p-6 shadow-sm border border-gray-100">
-            <div className="flex items-center justify-between mb-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 mb-5">
+          <div className="bg-white rounded-lg p-3 shadow-sm border border-gray-100">
+            <div className="flex items-center justify-between mb-2">
               <div className="w-12 h-12 bg-blue-50 rounded-xl flex items-center justify-center">
                 <DollarSign className="w-6 h-6 text-blue-600" />
               </div>
@@ -90,15 +90,15 @@ const Analytics = () => {
             <div className="text-sm text-gray-600">Total Distributed</div>
           </div>
 
-          <div className="bg-white rounded-2xl p-6 shadow-sm border border-gray-100">
-            <div className="flex items-center justify-between mb-4">
-              <div className="w-12 h-12 bg-green-50 rounded-xl flex items-center justify-center">
-                <Users className="w-6 h-6 text-green-600" />
+          <div className="bg-white rounded-lg p-3 shadow-sm border border-gray-100">
+            <div className="flex items-center justify-between mb-2">
+              <div className="w-7 h-7 bg-green-50 rounded-lg flex items-center justify-center">
+                <Users className="w-4 h-4 text-green-600" />
               </div>
-              <TrendingUp className="w-5 h-5 text-green-600" />
+              <TrendingUp className="w-3 h-3 text-green-600" />
             </div>
-            <div className="text-2xl font-bold text-gray-900 mb-1">{analyticsData.overview.totalRecipients}</div>
-            <div className="text-sm text-gray-600">Total Recipients</div>
+            <div className="text-lg font-bold text-gray-900 mb-1">{analyticsData.overview.totalRecipients}</div>
+            <div className="text-xs text-gray-600">Total Recipients</div>
           </div>
 
           <div className="bg-white rounded-2xl p-6 shadow-sm border border-gray-100">

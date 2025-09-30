@@ -23,63 +23,63 @@ const LandingPage = () => {
           <div className="absolute top-80 right-80 w-1 h-1 bg-blue-200 rounded-full"></div>
         </div>
         
-        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-24 pb-16">
+        <div className="relative max-w-4xl mx-auto px-2 sm:px-3 lg:px-4 pt-16 pb-10">
           <div className="text-center">
             {/* Badge */}
-            <div className="inline-flex items-center px-4 py-2 bg-blue-100 text-blue-700 rounded-full text-sm font-medium mb-8">
-              <Star className="w-4 h-4 mr-2" />
+            <div className="inline-flex items-center px-2 py-1 bg-blue-100 text-blue-700 rounded-full text-xs font-medium mb-5">
+              <Star className="w-3 h-3 mr-1" />
               Trusted by 1000+ projects worldwide
             </div>
             
             {/* Main Heading */}
-            <h1 className="text-5xl md:text-6xl font-bold text-gray-900 mb-6 leading-tight">
+            <h1 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4 leading-tight">
               Distribute Crypto
               <span className="text-blue-600"> with Confidence</span>
               </h1>
             
             {/* Subtitle */}
-            <p className="text-xl text-gray-600 mb-8 max-w-3xl mx-auto leading-relaxed">
+            <p className="text-sm text-gray-600 mb-5 max-w-2xl mx-auto leading-relaxed">
               The most reliable platform for bulk token distributions. 
               <span className="font-semibold text-blue-600"> 99.9% success rate</span> across all major networks.
               </p>
 
             {/* CTA Buttons */}
-            <div className="flex flex-col sm:flex-row gap-4 justify-center mb-12">
+            <div className="flex flex-col sm:flex-row gap-2 justify-center mb-8">
               <Link
                 to="/dashboard"
-                className="bg-blue-600 text-white px-8 py-4 rounded-xl font-semibold hover:bg-blue-700 transition-all duration-200 inline-flex items-center justify-center shadow-lg hover:shadow-xl transform hover:-translate-y-0.5"
+                className="bg-blue-600 text-white px-5 py-2 rounded-lg font-semibold hover:bg-blue-700 transition-all duration-200 inline-flex items-center justify-center shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 text-sm"
               >
                 Get Started Free
-                <ArrowRight className="w-5 h-5 ml-2" />
+                <ArrowRight className="w-3 h-3 ml-1" />
               </Link>
-              <button className="bg-white text-gray-700 px-8 py-4 rounded-xl font-semibold hover:bg-gray-50 transition-all duration-200 inline-flex items-center justify-center border border-gray-200 shadow-lg hover:shadow-xl transform hover:-translate-y-0.5">
-                <Play className="w-5 h-5 mr-2" />
+              <button className="bg-white text-gray-700 px-5 py-2 rounded-lg font-semibold hover:bg-gray-50 transition-all duration-200 inline-flex items-center justify-center border border-gray-200 shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 text-sm">
+                <Play className="w-3 h-3 mr-1" />
                 Watch Demo
               </button>
             </div>
 
             {/* Trust Indicators */}
-            <div className="flex flex-wrap justify-center items-center gap-8 text-gray-500">
+            <div className="flex flex-wrap justify-center items-center gap-4 text-gray-500">
               <div className="flex items-center">
-                <CheckCircle className="w-5 h-5 text-green-500 mr-2" />
-                <span className="text-sm">No KYC Required</span>
+                <CheckCircle className="w-3 h-3 text-green-500 mr-1" />
+                <span className="text-xs">No KYC Required</span>
               </div>
               <div className="flex items-center">
-                <Shield className="w-5 h-5 text-blue-500 mr-2" />
-                <span className="text-sm">Enterprise Security</span>
+                <Shield className="w-3 h-3 text-blue-500 mr-1" />
+                <span className="text-xs">Enterprise Security</span>
               </div>
               <div className="flex items-center">
-                <Zap className="w-5 h-5 text-yellow-500 mr-2" />
-                <span className="text-sm">Instant Setup</span>
+                <Zap className="w-3 h-3 text-yellow-500 mr-1" />
+                <span className="text-xs">Instant Setup</span>
               </div>
             </div>
           </div>
         </div>
 
         {/* Floating Elements */}
-        <div className="absolute top-20 left-10 w-20 h-20 bg-blue-200 rounded-full opacity-20 animate-pulse"></div>
-        <div className="absolute top-40 right-20 w-16 h-16 bg-blue-300 rounded-full opacity-30 animate-bounce"></div>
-        <div className="absolute bottom-20 left-20 w-12 h-12 bg-blue-100 rounded-full opacity-40 animate-pulse"></div>
+        <div className="absolute top-12 left-6 w-12 h-12 bg-blue-200 rounded-full opacity-20 animate-pulse"></div>
+        <div className="absolute top-24 right-12 w-10 h-10 bg-blue-300 rounded-full opacity-30 animate-bounce"></div>
+        <div className="absolute bottom-12 left-12 w-7 h-7 bg-blue-100 rounded-full opacity-40 animate-pulse"></div>
       </div>
 
       {/* Stats Section */}

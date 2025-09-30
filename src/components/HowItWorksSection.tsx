@@ -34,26 +34,26 @@ const HowItWorksSection = () => {
   ];
 
   return (
-    <div className="py-16 bg-gray-50">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="text-center mb-12">
-          <h2 className="text-3xl font-bold text-gray-900 mb-4">How Disperzo Works</h2>
-          <p className="text-lg text-gray-600 max-w-2xl mx-auto">
+    <div className="py-10 bg-gray-50">
+      <div className="max-w-4xl mx-auto px-2 sm:px-3 lg:px-4">
+        <div className="text-center mb-8">
+          <h2 className="text-lg font-bold text-gray-900 mb-2">How Disperzo Works</h2>
+          <p className="text-sm text-gray-600 max-w-xl mx-auto">
             Get started with bulk token distributions in just 4 simple steps
           </p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
           {steps.map((step, index) => {
             const Icon = step.icon;
             return (
-              <div key={index} className="bg-white rounded-2xl p-8 text-center shadow-sm border border-gray-100 hover:shadow-md transition-all duration-200">
-                <div className={`w-16 h-16 ${step.bgColor} rounded-2xl flex items-center justify-center mx-auto mb-6`}>
-                  <Icon className={`w-8 h-8 ${step.color}`} />
+              <div key={index} className="bg-white rounded-lg p-4 text-center shadow-sm border border-gray-100 hover:shadow-md transition-all duration-200">
+                <div className={`w-10 h-10 ${step.bgColor} rounded-lg flex items-center justify-center mx-auto mb-3`}>
+                  <Icon className={`w-5 h-5 ${step.color}`} />
                 </div>
-                <div className="text-sm font-medium text-blue-600 mb-2">Step {index + 1}</div>
-                <h3 className="text-xl font-semibold text-gray-900 mb-4">{step.title}</h3>
-                <p className="text-gray-600 leading-relaxed">{step.description}</p>
+                <div className="text-xs font-medium text-blue-600 mb-1">Step {index + 1}</div>
+                <h3 className="text-sm font-semibold text-gray-900 mb-2">{step.title}</h3>
+                <p className="text-gray-600 leading-relaxed text-xs">{step.description}</p>
               </div>
             );
           })}

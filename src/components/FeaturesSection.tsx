@@ -48,25 +48,25 @@ const FeaturesSection = () => {
   ];
 
   return (
-    <div className="py-16 bg-white">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="text-center mb-12">
-          <h2 className="text-3xl font-bold text-gray-900 mb-4">Why Choose Disperzo?</h2>
-          <p className="text-lg text-gray-600 max-w-2xl mx-auto">
+    <div className="py-10 bg-white">
+      <div className="max-w-4xl mx-auto px-2 sm:px-3 lg:px-4">
+        <div className="text-center mb-8">
+          <h2 className="text-lg font-bold text-gray-900 mb-2">Why Choose Disperzo?</h2>
+          <p className="text-sm text-gray-600 max-w-xl mx-auto">
             Built for scale, security, and simplicity. Everything you need for successful token distributions.
           </p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
           {features.map((feature, index) => {
             const Icon = feature.icon;
             return (
-              <div key={index} className="bg-gray-50 rounded-2xl p-8 hover:bg-white hover:shadow-md transition-all duration-200 border border-gray-100">
-                <div className={`w-12 h-12 ${feature.bgColor} rounded-xl flex items-center justify-center mb-6`}>
-                  <Icon className={`w-6 h-6 ${feature.color}`} />
+              <div key={index} className="bg-gray-50 rounded-lg p-4 hover:bg-white hover:shadow-md transition-all duration-200 border border-gray-100">
+                <div className={`w-7 h-7 ${feature.bgColor} rounded-lg flex items-center justify-center mb-3`}>
+                  <Icon className={`w-4 h-4 ${feature.color}`} />
                 </div>
-                <h3 className="text-xl font-semibold text-gray-900 mb-4">{feature.title}</h3>
-                <p className="text-gray-600 leading-relaxed">{feature.description}</p>
+                <h3 className="text-sm font-semibold text-gray-900 mb-2">{feature.title}</h3>
+                <p className="text-gray-600 leading-relaxed text-xs">{feature.description}</p>
               </div>
             );
           })}
