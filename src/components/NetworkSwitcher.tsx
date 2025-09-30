@@ -28,7 +28,7 @@ const NetworkSwitcher = () => {
   };
 
   return (
-    <div className="relative">
+    <div className="relative flex items-center justify-center w-full space-x-4">
       <button
         onClick={() => setIsOpen(!isOpen)}
         disabled={isLoading || isSwitching}
@@ -103,10 +103,10 @@ const NetworkSwitcher = () => {
 
       {/* U2U Testnet Info */}
       {currentNetwork === 'u2u-nebulas' && (
-        <div className="mt-2 p-3 bg-blue-50 border border-blue-200 rounded-lg">
-          <div className="flex items-start">
-            <AlertCircle className="w-4 h-4 text-blue-500 mr-2 mt-0.5 flex-shrink-0" />
-            <div className="text-sm">
+        <div className=" p-2 bg-blue-50 border border-blue-200 rounded-lg h-[90%] ">
+          <div className="flex items-center justify-center">
+            {/* <AlertCircle className="w-4 h-4 text-blue-500 mr-2 mt-0.5 flex-shrink-0" /> */}
+            <div className="text-[10px]">
               <p className="text-blue-800 font-medium">U2U Nebulas Testnet</p>
               <p className="text-blue-600">
                 You're connected to the testnet. Get test U2U tokens from the faucet.

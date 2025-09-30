@@ -332,7 +332,7 @@ const DistributionWizard = () => {
           <p className="text-sm text-gray-600 mb-2">
             Create bulk token distributions on U2U Nebulas Testnet
           </p>
-          <div className="bg-green-50 border border-green-200 rounded-lg p-2 mb-2">
+          {/* <div className="bg-green-50 border border-green-200 rounded-lg p-2 mb-2">
             <div className="flex items-center">
               <CheckCircle className="w-3 h-3 text-green-500 mr-1" />
               <div>
@@ -342,7 +342,7 @@ const DistributionWizard = () => {
                 </p>
               </div>
             </div>
-          </div>
+          </div> */}
           <div className="flex items-center justify-center space-x-2 text-xs text-gray-500 mb-2">
             <div className="flex items-center space-x-1">
               <span>Wallet:</span>
@@ -369,10 +369,10 @@ const DistributionWizard = () => {
           {/* Test USDC Mint Section */}
           <div className="bg-blue-50 border border-blue-200 rounded-lg p-2 mb-2">
             <div className="flex items-center justify-between">
-              <div>
+              <div className='flex items-center justify-center space-x-2'>
                 <h3 className="text-blue-800 font-medium mb-0.5 text-xs">Mint Test USDC</h3>
                 <p className="text-blue-600 text-xs">
-                  Get test USDC tokens for distribution testing
+                  (Get test USDC tokens for distribution testing)
                 </p>
               </div>
               <div className="flex items-center space-x-1">
@@ -416,22 +416,22 @@ const DistributionWizard = () => {
               </div>
             )}
           </div>
-          <div className="flex justify-center">
+          <div className="flex items-start">
             <NetworkSwitcher />
           </div>
           
           {/* U2U Faucet Info */}
           {parseFloat(balance || '0') < 0.001 && (
-            <div className="mt-4 p-4 bg-yellow-50 border border-yellow-200 rounded-lg">
-              <div className="flex items-start">
-                <AlertCircle className="w-5 h-5 text-yellow-500 mr-2 mt-0.5 flex-shrink-0" />
+            <div className="mt-4 p-4 bg-yellow-50 border border-yellow-200 rounded-lg ">
+              <div className="flex items-start justify-center">
+                {/* <AlertCircle className="w-5 h-5 text-yellow-500 mr-2 mt-0.5 flex-shrink-0" /> */}
                 <div>
                   <h3 className="text-yellow-800 font-medium mb-1">Low U2U Balance</h3>
                   <p className="text-yellow-700 text-sm mb-2">
                     You need U2U tokens for gas fees. Get test tokens from the U2U faucet:
                   </p>
                   <a
-                    href="https://faucet.u2uscan.xyz/"
+                    href="https://faucet.u2u.xyz/"
                     target="_blank"
                     rel="noopener noreferrer"
                     className="inline-flex items-center px-3 py-1 bg-yellow-600 text-white text-sm rounded hover:bg-yellow-700"
