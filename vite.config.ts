@@ -17,6 +17,7 @@ export default defineConfig({
       },
     },
   },
+  publicDir: 'public',
   optimizeDeps: {
     exclude: ['lucide-react'],
   },
