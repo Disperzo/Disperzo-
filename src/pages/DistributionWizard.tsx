@@ -322,7 +322,7 @@ const DistributionWizard = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 pt-10">
+    <div className="min-h-screen bg-gray-50 pt-10 overflow-x-auto">
       <div className="max-w-3xl mx-auto px-2 sm:px-3 lg:px-4 py-5">
         {/* Header */}
         <div className="text-center mb-5">
@@ -446,14 +446,14 @@ const DistributionWizard = () => {
 
         {/* Progress Steps */}
         <div className="mb-5">
-          <div className="flex items-center justify-between">
+          <div className="flex items-center justify-between overflow-x-auto pb-2">
             {steps.map((step, index) => {
               const Icon = step.icon;
               const isActive = currentStep === step.id;
               const isCompleted = currentStep > step.id;
               
               return (
-                <div key={step.id} className="flex items-center">
+                <div key={step.id} className="flex items-center flex-shrink-0">
                   <div className={`flex items-center justify-center w-6 h-6 rounded-full border-2 ${
                     isCompleted 
                       ? 'bg-green-500 border-green-500 text-white' 
@@ -464,14 +464,14 @@ const DistributionWizard = () => {
                     <Icon className="w-3 h-3" />
                   </div>
                   <div className="ml-2">
-                    <p className={`text-xs font-medium ${
+                    <p className={`text-xs font-medium whitespace-nowrap ${
                       isActive ? 'text-blue-600' : isCompleted ? 'text-green-600' : 'text-gray-500'
                     }`}>
                       {step.name}
                     </p>
                   </div>
                   {index < steps.length - 1 && (
-                    <div className={`w-10 h-0.5 mx-2 ${
+                    <div className={`w-10 h-0.5 mx-2 flex-shrink-0 ${
                       isCompleted ? 'bg-green-500' : 'bg-gray-300'
                     }`} />
                   )}
@@ -492,11 +492,11 @@ const DistributionWizard = () => {
         )} */}
 
         {/* Step Content */}
-        <div className="bg-white rounded-lg shadow-lg p-5">
+        <div className="bg-white rounded-lg shadow-lg p-5 overflow-x-auto">
           {currentStep === 1 && (
             <div>
               <h2 className="text-sm font-semibold text-gray-900 mb-4">Select Token Type</h2>
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-2 mb-4">
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-2 mb-4 min-w-0">
                 {[
                   { type: 'erc20', name: 'ERC20 Token', description: 'Fungible tokens (like USDC, USDT)' },
                   { type: 'erc721', name: 'ERC721 NFT', description: 'Non-fungible tokens (unique items)' },
@@ -584,7 +584,7 @@ const DistributionWizard = () => {
                   </button>
                 </div>
                 
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6 min-w-0">
                   <div>
                     <label className="block text-sm font-medium text-gray-700 mb-2">
                       Distribution Name
@@ -632,8 +632,8 @@ const DistributionWizard = () => {
 
               <div className="space-y-4">
                 {distributionData.recipients.map((recipient, index) => (
-                  <div key={index} className="flex items-center space-x-4 p-4 border border-gray-200 rounded-lg">
-                    <div className="flex-1">
+                  <div key={index} className="flex items-center space-x-4 p-4 border border-gray-200 rounded-lg min-w-0">
+                    <div className="flex-1 min-w-0">
                       <input
                         type="text"
                         value={recipient.address}
@@ -642,7 +642,7 @@ const DistributionWizard = () => {
                         className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                       />
                     </div>
-                    <div className="w-32">
+                    <div className="w-32 flex-shrink-0">
                       <input
                         type="text"
                         value={recipient.amount}
@@ -653,7 +653,7 @@ const DistributionWizard = () => {
                     </div>
                     <button
                       onClick={() => removeRecipient(index)}
-                      className="px-3 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700"
+                      className="px-3 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 flex-shrink-0"
                     >
                       Remove
                     </button>
@@ -661,17 +661,17 @@ const DistributionWizard = () => {
                 ))}
               </div>
 
-              <div className="flex justify-between mt-6">
+              <div className="flex justify-between mt-6 flex-wrap gap-2">
                 <button
                   onClick={() => setCurrentStep(1)}
-                  className="px-6 py-2 bg-gray-600 text-white rounded-lg hover:bg-gray-700"
+                  className="px-6 py-2 bg-gray-600 text-white rounded-lg hover:bg-gray-700 flex-shrink-0"
                 >
                   Back
                 </button>
                 <button
                   onClick={() => setCurrentStep(3)}
                   disabled={distributionData.recipients.length === 0}
-                  className="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed"
+                  className="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed flex-shrink-0"
                 >
                   Next: Review
                 </button>
@@ -778,17 +778,17 @@ const DistributionWizard = () => {
                 </div>
               )}
 
-              <div className="flex justify-between mt-6">
+              <div className="flex justify-between mt-6 flex-wrap gap-2">
                 <button
                   onClick={() => setCurrentStep(2)}
-                  className="px-6 py-2 bg-gray-600 text-white rounded-lg hover:bg-gray-700"
+                  className="px-6 py-2 bg-gray-600 text-white rounded-lg hover:bg-gray-700 flex-shrink-0"
                 >
                   Back
                 </button>
                 <button
                   onClick={handleCreateDistribution}
                   disabled={isCreating || (distributionData.tokenType === 'erc20' && !!distributionData.tokenAddress && !approvedTokens.has(distributionData.tokenAddress))}
-                  className="px-6 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 disabled:opacity-50 disabled:cursor-not-allowed flex items-center"
+                  className="px-6 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 disabled:opacity-50 disabled:cursor-not-allowed flex items-center flex-shrink-0"
                 >
                   {isCreating ? (
                     <>
@@ -860,7 +860,7 @@ const DistributionWizard = () => {
                   </div>
 
                   {/* Action Buttons */}
-                  <div className="flex flex-col sm:flex-row justify-center gap-4">
+                  <div className="flex flex-col sm:flex-row justify-center gap-4 flex-wrap">
                     <button
                       onClick={() => {
                         // Reset to step 1 and clear all data
@@ -877,7 +877,7 @@ const DistributionWizard = () => {
                         setApprovedTokens(new Set());
                         setApprovalTxHash(null);
                       }}
-                      className="px-8 py-3 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors font-medium"
+                      className="px-8 py-3 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors font-medium flex-shrink-0"
                     >
                       🚀 Create Another Distribution
                     </button>
@@ -886,7 +886,7 @@ const DistributionWizard = () => {
                         // Navigate to home - you can replace this with your actual home navigation
                         window.location.href = '/';
                       }}
-                      className="px-8 py-3 bg-gray-600 text-white rounded-lg hover:bg-gray-700 transition-colors font-medium"
+                      className="px-8 py-3 bg-gray-600 text-white rounded-lg hover:bg-gray-700 transition-colors font-medium flex-shrink-0"
                     >
                       🏠 Back to Home
                     </button>

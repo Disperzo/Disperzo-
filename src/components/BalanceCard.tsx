@@ -335,8 +335,10 @@ const BalanceCard: React.FC = () => {
       id: 'u2u-nebulas',
       name: 'U2U Nebulas',
       icon: '🦄',
-      assets: isConnected && selectedChain === 'u2u-nebulas' && realBalances.length > 0 
-        ? realBalances 
+      assets: isConnected && selectedChain === 'u2u-nebulas' 
+        ? realBalances.length > 0 
+          ? realBalances 
+          : [] // Show empty array when no tokens
         : [
             {
               symbol: 'U2U',
@@ -371,10 +373,12 @@ const BalanceCard: React.FC = () => {
   ];
 
   const currentChain = chains.find(chain => chain.id === selectedChain);
-  const totalValue = currentChain?.assets.reduce((sum, asset) => {
-    const value = parseFloat(asset.value.replace('$', '').replace(',', ''));
-    return sum + value;
-  }, 0) || 0;
+  const totalValue = currentChain?.assets && currentChain.assets.length > 0 
+    ? currentChain.assets.reduce((sum, asset) => {
+        const value = parseFloat(asset.value.replace('$', '').replace(',', ''));
+        return sum + value;
+      }, 0)
+    : 0;
 
   const getChangeColor = (change: number) => {
     if (change > 0) return 'text-green-600';
@@ -471,15 +475,21 @@ const BalanceCard: React.FC = () => {
         <div className="flex items-center justify-between">
           <div>
             <p className="text-xs text-gray-600 mb-0.5">Total Value</p>
-            <p className="text-lg font-bold text-gray-900">${totalValue.toLocaleString()}</p>
+            {currentChain?.assets && currentChain.assets.length > 0 ? (
+              <p className="text-lg font-bold text-gray-900">${totalValue.toLocaleString()}</p>
+            ) : (
+              <p className="text-lg font-bold text-gray-500">No token holding</p>
+            )}
           </div>
-          <div className="text-right">
-            <div className="flex items-center text-green-600 text-xs">
-              <TrendingUp className="w-3 h-3 mr-0.5" />
-              +$456.78 (12.5%)
+          {currentChain?.assets && currentChain.assets.length > 0 && (
+            <div className="text-right">
+              <div className="flex items-center text-green-600 text-xs">
+                <TrendingUp className="w-3 h-3 mr-0.5" />
+                +$456.78 (12.5%)
+              </div>
+              <p className="text-xs text-gray-500">Last 24h</p>
             </div>
-            <p className="text-xs text-gray-500">Last 24h</p>
-          </div>
+          )}
         </div>
       </div>
 
@@ -490,29 +500,39 @@ const BalanceCard: React.FC = () => {
           <span className="text-xs text-gray-500">{currentChain?.assets.length} tokens</span>
         </div>
         
-        <div className="space-y-2">
-          {currentChain?.assets.map((asset, index) => (
-            <div key={index} className="flex items-center justify-between p-2 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors">
-              <div className="flex items-center space-x-2">
-                <div className="w-6 h-6 bg-white rounded-lg flex items-center justify-center">
-                  <span className="text-sm">{asset.icon}</span>
+        {currentChain?.assets && currentChain.assets.length > 0 ? (
+          <div className="space-y-2">
+            {currentChain?.assets.map((asset, index) => (
+              <div key={index} className="flex items-center justify-between p-2 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors">
+                <div className="flex items-center space-x-2">
+                  <div className="w-6 h-6 bg-white rounded-lg flex items-center justify-center">
+                    <span className="text-sm">{asset.icon}</span>
+                  </div>
+                  <div>
+                    <div className="font-medium text-gray-900 text-xs">{asset.symbol}</div>
+                    <div className="text-xs text-gray-500">{asset.name}</div>
+                  </div>
                 </div>
-                <div>
-                  <div className="font-medium text-gray-900 text-xs">{asset.symbol}</div>
-                  <div className="text-xs text-gray-500">{asset.name}</div>
+                
+                <div className="text-right">
+                  <div className="font-medium text-gray-900 text-xs">{asset.value}</div>
+                  <div className="text-xs text-gray-500">{asset.balance} {asset.symbol}</div>
+                  <div className={`text-xs ${getChangeColor(asset.change24hPercent)}`}>
+                    {asset.change24h} ({asset.change24hPercent > 0 ? '+' : ''}{asset.change24hPercent}%)
+                  </div>
                 </div>
               </div>
-              
-              <div className="text-right">
-                <div className="font-medium text-gray-900 text-xs">{asset.value}</div>
-                <div className="text-xs text-gray-500">{asset.balance} {asset.symbol}</div>
-                <div className={`text-xs ${getChangeColor(asset.change24hPercent)}`}>
-                  {asset.change24h} ({asset.change24hPercent > 0 ? '+' : ''}{asset.change24hPercent}%)
-                </div>
-              </div>
+            ))}
+          </div>
+        ) : (
+          <div className="text-center py-8">
+            <div className="w-12 h-12 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-3">
+              <Wallet className="w-6 h-6 text-gray-400" />
             </div>
-          ))}
-        </div>
+            <p className="text-sm text-gray-500 font-medium">No token holding</p>
+            <p className="text-xs text-gray-400 mt-1">Connect your wallet to see your assets</p>
+          </div>
+        )}
       </div>
     </div>
   );
