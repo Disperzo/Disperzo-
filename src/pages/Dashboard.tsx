@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import { Plus, Download, Search, Clock, CheckCircle, AlertCircle, ArrowUpRight, TrendingUp } from 'lucide-react';
 import DistributionCard from '../components/DistributionCard';
 import StatsCard from '../components/StatsCard';
-import KYCBanner from '../components/KYCBanner';
+// import KYCBanner from '../components/KYCBanner';
 import BalanceCard from '../components/BalanceCard';
 import ActionButtons from '../components/ActionButtons';
 import TransactionSection from '../components/TransactionSection';
@@ -182,7 +182,7 @@ const Dashboard = () => {
     <div className="min-h-screen bg-gray-50">
       <div className="max-w-4xl mx-auto px-2 sm:px-3 lg:px-4 py-5">
         {/* KYC Banner */}
-        <KYCBanner />
+        {/* <KYCBanner /> */}
 
         {/* Verification Info Link */}
         <div className="text-center mb-4">
